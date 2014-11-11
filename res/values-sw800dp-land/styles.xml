@@ -21,7 +21,9 @@
     <style name="DisplayEditTextStyle.Formula">
         <item name="android:paddingTop">72dip</item>
         <item name="android:paddingBottom">26dip</item>
+        <item name="android:paddingLeft">44dip</item>
         <item name="android:paddingStart">44dip</item>
+        <item name="android:paddingRight">44dip</item>
         <item name="android:paddingEnd">44dip</item>
         <item name="minTextSize">56sp</item>
         <item name="maxTextSize">96sp</item>
@@ -31,7 +33,9 @@
     <style name="DisplayEditTextStyle.Result">
         <item name="android:paddingTop">26dip</item>
         <item name="android:paddingBottom">46dip</item>
+        <item name="android:paddingLeft">44dip</item>
         <item name="android:paddingStart">44dip</item>
+        <item name="android:paddingRight">44dip</item>
         <item name="android:paddingEnd">44dip</item>
         <item name="android:textSize">56sp</item>
     </style>
@@ -67,7 +71,9 @@
         <item name="android:layout_weight">508</item>
         <item name="android:paddingTop">10dip</item>
         <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">18dip</item>
         <item name="android:paddingStart">18dip</item>
+        <item name="android:paddingRight">22dip</item>
         <item name="android:paddingEnd">22dip</item>
         <item name="android:columnCount">3</item>
         <item name="android:rowCount">4</item>
@@ -78,7 +84,9 @@
         <item name="android:layout_weight">532</item>
         <item name="android:paddingTop">10dip</item>
         <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">22dip</item>
         <item name="android:paddingStart">22dip</item>
+        <item name="android:paddingRight">18dip</item>
         <item name="android:paddingEnd">18dip</item>
     </style>
 
@@ -87,7 +95,9 @@
         <item name="android:layout_weight">240</item>
         <item name="android:paddingTop">10dip</item>
         <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">18dip</item>
         <item name="android:paddingStart">18dip</item>
+        <item name="android:paddingRight">18dip</item>
         <item name="android:paddingEnd">18dip</item>
     </style>
 
