@@ -18,12 +18,13 @@ package com.android.calculator2;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class CalculatorPadViewPager extends ViewPager {
+import com.nineoldandroids.view.ViewHelper;
+
+public class CalculatorPadViewPager extends NineOldViewPager {
 
     private final PagerAdapter mStaticPagerAdapter = new PagerAdapter() {
         @Override
@@ -80,12 +81,12 @@ public class CalculatorPadViewPager extends ViewPager {
         public void transformPage(View view, float position) {
             if (position < 0.0f) {
                 // Pin the left page to the left side.
-                view.setTranslationX(getWidth() * -position);
-                view.setAlpha(Math.max(1.0f + position, 0.0f));
+                ViewHelper.setTranslationX(view, getWidth() * -position);
+                ViewHelper.setAlpha(view, Math.max(1.0f + position, 0.0f));
             } else {
                 // Use the default slide transition when moving to the next page.
-                view.setTranslationX(0.0f);
-                view.setAlpha(1.0f);
+                ViewHelper.setTranslationX(view, 0.0f);
+                ViewHelper.setAlpha(view, 1.0f);
             }
         }
     };

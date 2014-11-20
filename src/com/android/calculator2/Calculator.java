@@ -16,19 +16,11 @@
 
 package com.android.calculator2;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,7 +28,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroupOverlay;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -44,6 +35,13 @@ import android.widget.TextView;
 
 import com.android.calculator2.CalculatorEditText.OnTextSizeChangeListener;
 import com.android.calculator2.CalculatorExpressionEvaluator.EvaluateCallback;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ArgbEvaluator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
 
 public class Calculator extends Activity
         implements OnTextSizeChangeListener, EvaluateCallback, OnLongClickListener {
@@ -112,7 +110,7 @@ public class Calculator extends Activity
     private View mDisplayView;
     private CalculatorEditText mFormulaEditText;
     private CalculatorEditText mResultEditText;
-    private ViewPager mPadViewPager;
+    private NineOldViewPager mPadViewPager;
     private View mDeleteButton;
     private View mEqualButton;
     private View mClearButton;
@@ -128,7 +126,7 @@ public class Calculator extends Activity
         mDisplayView = findViewById(R.id.display);
         mFormulaEditText = (CalculatorEditText) findViewById(R.id.formula);
         mResultEditText = (CalculatorEditText) findViewById(R.id.result);
-        mPadViewPager = (ViewPager) findViewById(R.id.pad_pager);
+        mPadViewPager = (NineOldViewPager) findViewById(R.id.pad_pager);
         mDeleteButton = findViewById(R.id.del);
         mClearButton = findViewById(R.id.clr);
 
@@ -143,8 +141,9 @@ public class Calculator extends Activity
         savedInstanceState = savedInstanceState == null ? Bundle.EMPTY : savedInstanceState;
         setState(CalculatorState.values()[
                 savedInstanceState.getInt(KEY_CURRENT_STATE, CalculatorState.INPUT.ordinal())]);
+        String keyCurrentExpr = savedInstanceState.getString(KEY_CURRENT_EXPRESSION);
         mFormulaEditText.setText(mTokenizer.getLocalizedExpression(
-                savedInstanceState.getString(KEY_CURRENT_EXPRESSION, "")));
+                keyCurrentExpr == null ? "" : keyCurrentExpr));
         mEvaluator.evaluate(mFormulaEditText.getText(), this);
 
         mFormulaEditText.setEditableFactory(mFormulaEditableFactory);
@@ -184,14 +183,14 @@ public class Calculator extends Activity
                 final int errorColor = getResources().getColor(R.color.calculator_error_color);
                 mFormulaEditText.setTextColor(errorColor);
                 mResultEditText.setTextColor(errorColor);
-                getWindow().setStatusBarColor(errorColor);
+//                getWindow().setStatusBarColor(errorColor);
             } else {
                 mFormulaEditText.setTextColor(
                         getResources().getColor(R.color.display_formula_text_color));
                 mResultEditText.setTextColor(
                         getResources().getColor(R.color.display_result_text_color));
-                getWindow().setStatusBarColor(
-                        getResources().getColor(R.color.calculator_accent_color));
+//                getWindow().setStatusBarColor(
+//                        getResources().getColor(R.color.calculator_accent_color));
             }
         }
     }
@@ -284,16 +283,16 @@ public class Calculator extends Activity
         // maintaining the same apparent baseline for the displayed text.
         final float textScale = oldSize / textView.getTextSize();
         final float translationX = (1.0f - textScale) *
-                (textView.getWidth() / 2.0f - textView.getPaddingEnd());
+                (textView.getWidth() / 2.0f - ViewCompat.getPaddingEnd(textView));
         final float translationY = (1.0f - textScale) *
                 (textView.getHeight() / 2.0f - textView.getPaddingBottom());
 
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(textView, View.SCALE_X, textScale, 1.0f),
-                ObjectAnimator.ofFloat(textView, View.SCALE_Y, textScale, 1.0f),
-                ObjectAnimator.ofFloat(textView, View.TRANSLATION_X, translationX, 0.0f),
-                ObjectAnimator.ofFloat(textView, View.TRANSLATION_Y, translationY, 0.0f));
+                ObjectAnimator.ofFloat(textView, "scaleX", textScale, 1.0f),
+                ObjectAnimator.ofFloat(textView, "scaleY", textScale, 1.0f),
+                ObjectAnimator.ofFloat(textView, "translationX", translationX, 0.0f),
+                ObjectAnimator.ofFloat(textView, "translationY", translationY, 0.0f));
         animatorSet.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.start();
@@ -315,7 +314,7 @@ public class Calculator extends Activity
         }
     }
 
-    private void reveal(View sourceView, int colorRes, AnimatorListener listener) {
+    private void reveal(View sourceView, int colorRes, Animator.AnimatorListener listener) {
         final ViewGroupOverlay groupOverlay =
                 (ViewGroupOverlay) getWindow().getDecorView().getOverlay();
 
@@ -343,19 +342,19 @@ public class Calculator extends Activity
         final double y_2 = Math.pow(revealView.getTop() - revealCenterY, 2);
         final float revealRadius = (float) Math.max(Math.sqrt(x1_2 + y_2), Math.sqrt(x2_2 + y_2));
 
-        final Animator revealAnimator =
-                ViewAnimationUtils.createCircularReveal(revealView,
-                        revealCenterX, revealCenterY, 0.0f, revealRadius);
-        revealAnimator.setDuration(
-                getResources().getInteger(android.R.integer.config_longAnimTime));
-        revealAnimator.addListener(listener);
-
-        final Animator alphaAnimator = ObjectAnimator.ofFloat(revealView, View.ALPHA, 0.0f);
-        alphaAnimator.setDuration(
-                getResources().getInteger(android.R.integer.config_mediumAnimTime));
+//        final Animator revealAnimator =
+//                ViewAnimationUtils.createCircularReveal(revealView,
+//                        revealCenterX, revealCenterY, 0.0f, revealRadius);
+//        revealAnimator.setDuration(
+//                getResources().getInteger(android.R.integer.config_longAnimTime));
+//        revealAnimator.addListener(listener);
+//
+//        final Animator alphaAnimator = ObjectAnimator.ofFloat(revealView, View.ALPHA, 0.0f);
+//        alphaAnimator.setDuration(
+//                getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
         final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(revealAnimator).before(alphaAnimator);
+//        animatorSet.play(revealAnimator).before(alphaAnimator);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -404,7 +403,7 @@ public class Calculator extends Activity
         final float resultScale =
                 mFormulaEditText.getVariableTextSize(result) / mResultEditText.getTextSize();
         final float resultTranslationX = (1.0f - resultScale) *
-                (mResultEditText.getWidth() / 2.0f - mResultEditText.getPaddingEnd());
+                (mResultEditText.getWidth() / 2.0f - ViewCompat.getPaddingEnd(mResultEditText));
         final float resultTranslationY = (1.0f - resultScale) *
                 (mResultEditText.getHeight() / 2.0f - mResultEditText.getPaddingBottom()) +
                 (mFormulaEditText.getBottom() - mResultEditText.getBottom()) +
@@ -416,7 +415,7 @@ public class Calculator extends Activity
         final int formulaTextColor = mFormulaEditText.getCurrentTextColor();
         final ValueAnimator textColorAnimator =
                 ValueAnimator.ofObject(new ArgbEvaluator(), resultTextColor, formulaTextColor);
-        textColorAnimator.addUpdateListener(new AnimatorUpdateListener() {
+        textColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 mResultEditText.setTextColor((int) valueAnimator.getAnimatedValue());
@@ -426,11 +425,11 @@ public class Calculator extends Activity
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
                 textColorAnimator,
-                ObjectAnimator.ofFloat(mResultEditText, View.SCALE_X, resultScale),
-                ObjectAnimator.ofFloat(mResultEditText, View.SCALE_Y, resultScale),
-                ObjectAnimator.ofFloat(mResultEditText, View.TRANSLATION_X, resultTranslationX),
-                ObjectAnimator.ofFloat(mResultEditText, View.TRANSLATION_Y, resultTranslationY),
-                ObjectAnimator.ofFloat(mFormulaEditText, View.TRANSLATION_Y, formulaTranslationY));
+                ObjectAnimator.ofFloat(mResultEditText, "scaleX", resultScale),
+                ObjectAnimator.ofFloat(mResultEditText, "scaleY", resultScale),
+                ObjectAnimator.ofFloat(mResultEditText, "translationX", resultTranslationX),
+                ObjectAnimator.ofFloat(mResultEditText, "translationY", resultTranslationY),
+                ObjectAnimator.ofFloat(mFormulaEditText, "translationY", formulaTranslationY));
         animatorSet.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -443,11 +442,11 @@ public class Calculator extends Activity
             public void onAnimationEnd(Animator animation) {
                 // Reset all of the values modified during the animation.
                 mResultEditText.setTextColor(resultTextColor);
-                mResultEditText.setScaleX(1.0f);
-                mResultEditText.setScaleY(1.0f);
-                mResultEditText.setTranslationX(0.0f);
-                mResultEditText.setTranslationY(0.0f);
-                mFormulaEditText.setTranslationY(0.0f);
+                ViewHelper.setScaleX(mResultEditText, 1.0f);
+                ViewHelper.setScaleY(mResultEditText, 1.0f);
+                ViewHelper.setTranslationX(mResultEditText, 0.0f);
+                ViewHelper.setTranslationY(mResultEditText, 0.0f);
+                ViewHelper.setTranslationY(mFormulaEditText, 0.0f);
 
                 // Finally update the formula to use the current result.
                 mFormulaEditText.setText(result);

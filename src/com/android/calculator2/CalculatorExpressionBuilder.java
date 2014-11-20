@@ -16,7 +16,6 @@
 
 package com.android.calculator2;
 
-import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
@@ -35,7 +34,7 @@ public class CalculatorExpressionBuilder extends SpannableStringBuilder {
 
     @Override
     public SpannableStringBuilder replace(int start, int end, CharSequence tb, int tbstart,
-            int tbend) {
+                                          int tbend) {
         if (start != length() || end != length()) {
             mIsEdited = true;
             return super.replace(start, end, tb, tbstart, tbend);

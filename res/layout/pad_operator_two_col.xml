@@ -52,7 +52,7 @@
         android:onClick="onButtonClick"
         android:text="@string/op_mul" />
 
-    <Space style="@style/PadButtonStyle.Operator" />
+    <View style="@style/PadButtonStyle.Operator" />
 
     <Button
         android:id="@+id/op_sub"
@@ -61,7 +61,7 @@
         android:onClick="onButtonClick"
         android:text="@string/op_sub" />
 
-    <Space style="@style/PadButtonStyle.Operator" />
+    <View style="@style/PadButtonStyle.Operator" />
 
     <Button
         android:id="@+id/op_add"
