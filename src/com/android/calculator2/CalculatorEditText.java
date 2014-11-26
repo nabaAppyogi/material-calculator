@@ -91,7 +91,7 @@ public class CalculatorEditText extends EditText {
 
         a.recycle();
 
-//        setCustomSelectionActionModeCallback(NO_SELECTION_ACTION_MODE_CALLBACK);
+        // setCustomSelectionActionModeCallback(NO_SELECTION_ACTION_MODE_CALLBACK);
         if (isFocusable()) {
             setMovementMethod(ScrollingMovementMethod.getInstance());
         }
