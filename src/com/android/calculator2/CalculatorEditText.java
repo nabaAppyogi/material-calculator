@@ -22,11 +22,11 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
 import android.os.Parcelable;
-import android.text.method.ScrollingMovementMethod;
+import android.support.v7.view.ActionMode;
 import android.text.TextPaint;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -37,26 +37,26 @@ public class CalculatorEditText extends EditText {
 
     private final static ActionMode.Callback NO_SELECTION_ACTION_MODE_CALLBACK =
             new ActionMode.Callback() {
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return false;
-        }
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    return false;
+                }
 
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Prevents the selection action mode on double tap.
-            return false;
-        }
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    // Prevents the selection action mode on double tap.
+                    return false;
+                }
 
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-        }
+                @Override
+                public void onDestroyActionMode(ActionMode mode) {
+                }
 
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-    };
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    return false;
+                }
+            };
 
     private final float mMaximumTextSize;
     private final float mMinimumTextSize;
@@ -91,7 +91,7 @@ public class CalculatorEditText extends EditText {
 
         a.recycle();
 
-        setCustomSelectionActionModeCallback(NO_SELECTION_ACTION_MODE_CALLBACK);
+        // setCustomSelectionActionModeCallback(NO_SELECTION_ACTION_MODE_CALLBACK);
         if (isFocusable()) {
             setMovementMethod(ScrollingMovementMethod.getInstance());
         }

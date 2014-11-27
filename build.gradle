@@ -20,18 +20,33 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:0.12.+"
+        classpath "com.android.tools.build:gradle:0.14.1"
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }
 
 apply plugin: "com.android.application"
 
 android {
-    compileSdkVersion "android-L"
-    buildToolsVersion "20"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "com.google.android.apps.calculator"
+        applicationId "com.rahul.material.calculator"
+        minSdkVersion 10
+        targetSdkVersion 21
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     sourceSets {
@@ -54,5 +69,6 @@ repositories {
 
 dependencies {
     compile files("arity-2.1.2.jar")
-    compile "com.android.support:support-v4:+"
+    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

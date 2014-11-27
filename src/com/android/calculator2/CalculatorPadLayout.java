@@ -18,13 +18,14 @@ package com.android.calculator2;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * A layout that places children in an evenly distributed grid based on the specified
- *  {@link android.R.attr#columnCount} and {@link android.R.attr#rowCount} attributes.
+ * {@link android.R.attr#columnCount} and {@link android.R.attr#rowCount} attributes.
  */
 public class CalculatorPadLayout extends ViewGroup {
 
@@ -43,7 +44,7 @@ public class CalculatorPadLayout extends ViewGroup {
         super(context, attrs, defStyle);
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
-                new int[] { android.R.attr.rowCount, android.R.attr.columnCount }, defStyle, 0);
+                new int[]{android.R.attr.rowCount, android.R.attr.columnCount}, defStyle, 0);
         mRowCount = a.getInt(0, 1);
         mColumnCount = a.getInt(1, 1);
 
@@ -62,7 +63,7 @@ public class CalculatorPadLayout extends ViewGroup {
         final int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
 
-        final boolean isRTL = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+        final boolean isRTL = ViewCompat.getLayoutDirection(this) == LAYOUT_DIRECTION_RTL;
         final int columnWidth =
                 Math.round((float) (right - left - paddingLeft - paddingRight)) / mColumnCount;
         final int rowHeight =
