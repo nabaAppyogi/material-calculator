@@ -65,6 +65,7 @@ public class RevealColorView extends ViewGroup {
 
     public Animator createCircularReveal(final int x, final int y, final int color) {
         ViewHelper.setAlpha(this, 1);
+        Utils.setLayerTypeCompat(inkView, LAYER_TYPE_SOFTWARE);
         circle.getPaint().setColor(color);
 
         final float finalScale = calculateScale(x, y) * SCALE;
