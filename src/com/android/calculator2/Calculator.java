@@ -174,13 +174,13 @@ public abstract class Calculator extends Activity
                 final int errorColor = getResources().getColor(R.color.calculator_error_color);
                 mFormulaEditText.setTextColor(errorColor);
                 mResultEditText.setTextColor(errorColor);
-                // getWindow().setStatusBarColor(errorColor);
+                Utils.setStatusBarColorCompat(getWindow(), errorColor);
             } else {
                 mFormulaEditText.setTextColor(
                         getResources().getColor(R.color.display_formula_text_color));
                 mResultEditText.setTextColor(
                         getResources().getColor(R.color.display_result_text_color));
-                // getWindow().setStatusBarColor(getResources().getColor(R.color.calculator_accent_color));
+                Utils.setStatusBarColorCompat(getWindow(), getResources().getColor(R.color.calculator_accent_color));
             }
         }
     }

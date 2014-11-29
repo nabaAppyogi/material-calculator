@@ -8,9 +8,7 @@ public class StartActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final int version = android.os.Build.VERSION.SDK_INT;
-        if (version >= 21) {
+        if (Utils.hasLollipop()) {
             startActivity(new Intent(this, CalculatorL.class));
         } else {
             startActivity(new Intent(this, CalculatorGB.class));

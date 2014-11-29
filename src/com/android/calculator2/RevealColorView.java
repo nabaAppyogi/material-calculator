@@ -42,7 +42,7 @@ public class RevealColorView extends ViewGroup {
 
         circle = new ShapeDrawable(new OvalShape());
 
-        inkView.setBackgroundDrawable(circle);
+        Utils.setBackgroundCompat(inkView, circle);
         ViewHelper.setAlpha(this, 0);
     }
 

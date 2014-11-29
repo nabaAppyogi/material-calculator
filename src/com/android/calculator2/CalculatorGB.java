@@ -28,11 +28,7 @@ public class CalculatorGB extends Calculator {
         mDisplayView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    mDisplayView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    mDisplayView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
+                Utils.removeOnGlobalLayoutListenerCompat(mDisplayView, this);
                 revealColorView = new RevealColorView(CalculatorGB.this);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mDisplayView.getHeight());
                 revealColorView.setLayoutParams(params);
