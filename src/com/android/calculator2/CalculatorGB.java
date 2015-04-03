@@ -41,7 +41,7 @@ public class CalculatorGB extends Calculator {
     @Override
     void cancelAnimation() {
         if (mCurrentAnimator != null) {
-            mCurrentAnimator.cancel();
+            mCurrentAnimator.end();
         }
     }
 
@@ -60,16 +60,16 @@ public class CalculatorGB extends Calculator {
                         revealCenterX, revealCenterY, getResources().getColor(colorRes));
         revealAnimator.setDuration(
                 getResources().getInteger(android.R.integer.config_longAnimTime));
-        revealAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                listener.onAnimationEnd();
-            }
-        });
 
         final Animator alphaAnimator = ObjectAnimator.ofFloat(revealColorView, "alpha", 1, 0);
         alphaAnimator.setDuration(
                 getResources().getInteger(android.R.integer.config_mediumAnimTime));
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                listener.onAnimationStart();
+            }
+        });
 
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(revealAnimator).before(alphaAnimator);

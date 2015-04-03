@@ -38,7 +38,7 @@ public class CalculatorL extends Calculator {
     @Override
     void cancelAnimation() {
         if (mCurrentAnimator != null) {
-            mCurrentAnimator.cancel();
+            mCurrentAnimator.end();
         }
     }
 
@@ -75,16 +75,16 @@ public class CalculatorL extends Calculator {
                         revealCenterX, revealCenterY, 0.0f, revealRadius);
         revealAnimator.setDuration(
                 getResources().getInteger(android.R.integer.config_longAnimTime));
-        revealAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                listener.onAnimationEnd();
-            }
-        });
 
         final Animator alphaAnimator = ObjectAnimator.ofFloat(revealView, View.ALPHA, 0.0f);
         alphaAnimator.setDuration(
                 getResources().getInteger(android.R.integer.config_mediumAnimTime));
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                listener.onAnimationStart();
+            }
+        });
 
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(revealAnimator).before(alphaAnimator);

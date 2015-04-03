@@ -16,6 +16,7 @@
 
 package com.android.calculator2;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -78,7 +79,6 @@ public abstract class Calculator extends Activity
                 case KeyEvent.KEYCODE_NUMPAD_ENTER:
                 case KeyEvent.KEYCODE_ENTER:
                     if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                        mCurrentButton = mEqualButton;
                         onEquals();
                     }
                     // ignore all other actions
@@ -106,10 +106,8 @@ public abstract class Calculator extends Activity
     protected CalculatorEditText mResultEditText;
     private NineOldViewPager mPadViewPager;
     private View mDeleteButton;
-    private View mEqualButton;
     private View mClearButton;
-
-    private View mCurrentButton;
+    private View mEqualButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +146,8 @@ public abstract class Calculator extends Activity
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        // If there's an animation in progress, cancel it first to ensure our state is up-to-date.
+        // If there's an animation in progress, end it immediately to ensure the state is
+        // up-to-date before it is serialized.
         cancelAnimation();
 
         super.onSaveInstanceState(outState);
@@ -202,14 +201,12 @@ public abstract class Calculator extends Activity
     public void onUserInteraction() {
         super.onUserInteraction();
 
-        // If there's an animation in progress, cancel it so the user interaction can be handled
-        // immediately.
+        // If there's an animation in progress, end it immediately to ensure the state is
+        // up-to-date before the pending user interaction is handled.
         cancelAnimation();
     }
 
     public void onButtonClick(View view) {
-        mCurrentButton = view;
-
         switch (view.getId()) {
             case R.id.eq:
                 onEquals();
@@ -236,8 +233,6 @@ public abstract class Calculator extends Activity
 
     @Override
     public boolean onLongClick(View view) {
-        mCurrentButton = view;
-
         if (view.getId() == R.id.del) {
             onClear();
             return true;
@@ -312,9 +307,11 @@ public abstract class Calculator extends Activity
             return;
         }
 
-        reveal(mCurrentButton, R.color.calculator_accent_color, new AnimatorListenerWrapper() {
+        final View sourceView = mClearButton.getVisibility() == View.VISIBLE
+                ? mClearButton : mDeleteButton;
+        reveal(sourceView, R.color.calculator_accent_color, new AnimatorListenerWrapper() {
             @Override
-            public void onAnimationEnd() {
+            public void onAnimationStart() {
                 mFormulaEditText.getEditableText().clear();
             }
         });
@@ -327,9 +324,9 @@ public abstract class Calculator extends Activity
             return;
         }
 
-        reveal(mCurrentButton, R.color.calculator_error_color, new AnimatorListenerWrapper() {
+        reveal(mEqualButton, R.color.calculator_error_color, new AnimatorListenerWrapper() {
             @Override
-            public void onAnimationEnd() {
+            public void onAnimationStart() {
                 setState(CalculatorState.ERROR);
                 mResultEditText.setText(errorResourceId);
             }
