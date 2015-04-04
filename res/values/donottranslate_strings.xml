@@ -32,7 +32,7 @@
     <!-- Divide operator (e.g. "1 ÷ 2"). [CHAR_LIMIT=1] -->
     <string name="op_div">÷</string>
     <!-- Factorial operator (e.g. "2!"). [CHAR_LIMIT=1] -->
-    <string name="op_fact">!</string>
+    <string name="op_perc">%</string>
     <!-- Multiply operator (e.g. "1 × 2"). [CHAR_LIMIT=1] -->
     <string name="op_mul">×</string>
     <!-- Power operator (e.g. "1 ^ 2"). [CHAR_LIMIT=1] -->

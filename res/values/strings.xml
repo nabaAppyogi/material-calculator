@@ -97,7 +97,7 @@
     <!-- Content description for '÷' button. [CHAR_LIMIT=NONE] -->
     <string name="desc_op_div">divide</string>
     <!-- Content description for '!' button. [CHAR_LIMIT=NONE] -->
-    <string name="desc_op_fact">factorial</string>
+    <string name="desc_op_perc">percentage</string>
     <!-- Content description for '×' button. [CHAR_LIMIT=NONE] -->
     <string name="desc_op_mul">times</string>
     <!-- Content description for '^' button. [CHAR_LIMIT=NONE] -->
