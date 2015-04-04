@@ -24,7 +24,6 @@ import android.graphics.Rect;
 import android.os.Parcelable;
 import android.support.v7.view.ActionMode;
 import android.text.TextPaint;
-import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -92,9 +91,9 @@ public class CalculatorEditText extends EditText {
         a.recycle();
 
         // setCustomSelectionActionModeCallback(NO_SELECTION_ACTION_MODE_CALLBACK);
-        if (isFocusable()) {
-            setMovementMethod(ScrollingMovementMethod.getInstance());
-        }
+        // if (isFocusable()) {
+        // setMovementMethod(ScrollingMovementMethod.getInstance());
+        // }
         setTextSize(TypedValue.COMPLEX_UNIT_PX, mMaximumTextSize);
         setMinHeight(getLineHeight() + getCompoundPaddingBottom() + getCompoundPaddingTop());
     }

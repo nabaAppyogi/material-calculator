@@ -17,7 +17,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="CalculatorTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="CalculatorTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/calculator_accent_color</item>
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:statusBarColor">@color/calculator_accent_color</item>
