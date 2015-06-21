@@ -16,7 +16,9 @@
 
 package com.android.calculator2;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -30,11 +32,12 @@ public class CalculatorExpressionTokenizer {
 
     private final Map<String, String> mReplacementMap;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CalculatorExpressionTokenizer(Context context) {
         mReplacementMap = new HashMap<>();
 
         Locale locale = context.getResources().getConfiguration().locale;
-        if (!context.getResources().getBoolean(R.bool.use_localized_digits)) {
+        if (Utils.hasLollipop() && !context.getResources().getBoolean(R.bool.use_localized_digits)) {
             locale = new Locale.Builder()
                 .setLocale(locale)
                 .setUnicodeLocaleKeyword("nu", "latn")

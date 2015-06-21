@@ -16,7 +16,9 @@
 
 package com.android.calculator2;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.view.View;
@@ -40,11 +42,12 @@ public class CalculatorNumericPadLayout extends CalculatorPadLayout {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onFinishInflate() {
         super.onFinishInflate();
 
         Locale locale = getResources().getConfiguration().locale;
-        if (!getResources().getBoolean(R.bool.use_localized_digits)) {
+        if (Utils.hasLollipop() && !getResources().getBoolean(R.bool.use_localized_digits)) {
             locale = new Locale.Builder()
                 .setLocale(locale)
                 .setUnicodeLocaleKeyword("nu", "latn")
