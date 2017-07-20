@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2014 The Android Open Source Project
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
 
 <resources>
 
     <!-- Default background color for the status bar. -->
-    <color name="calculator_accent_color">#00BCD4</color>
+    <!--<color name="calculator_accent_color">#13c4bb</color>-->
+    <color name="calculator_accent_color">@color/colorPrimaryDark</color>
+    <color name="calculator_status_color">#002759</color>
+    <color name="colorPrimary">#2c4e86</color>
+    <color name="colorPrimaryDark">#002759</color>
 
     <!-- Color to indicate an error has occured. -->
     <color name="calculator_error_color">#F40056</color>
@@ -33,13 +22,15 @@
     <color name="display_result_text_color">#6C000000</color>
 
     <!-- Background color for the numeric pad. -->
-    <color name="pad_numeric_background_color">#434343</color>
+    <!--<color name="pad_numeric_background_color">#434343</color>-->
+    <color name="pad_numeric_background_color">@color/colorPrimaryDark</color>
 
     <!-- Background color for the operator pad. -->
-    <color name="pad_operator_background_color">#636363</color>
+    <!--<color name="pad_operator_background_color">#636363</color>-->
+    <color name="pad_operator_background_color">@color/colorPrimary</color>
 
     <!-- Background color for the advanced pad. -->
-    <color name="pad_advanced_background_color">#1DE9B6</color>
+    <color name="pad_advanced_background_color">#13c4bb</color>
 
     <!-- Text color for a button in a pad. -->
     <color name="pad_button_text_color">#FFF</color>

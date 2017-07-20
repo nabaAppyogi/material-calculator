@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-  Copyright (C) 2014 The Android Open Source Project
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-   -->
-
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="8095131950334945205">"कैल्क्युलेटर"</string>
@@ -50,7 +34,6 @@
     <string name="desc_fun_tan" msgid="8547330421304946587">"स्पर्शज्या"</string>
     <string name="desc_op_add" msgid="1174812755738083078">"जोड़ का चिह्न"</string>
     <string name="desc_op_div" msgid="8320455802423478031">"विभाजन"</string>
-    <string name="desc_op_fact" msgid="5004950609277631750">"क्रमगुणन"</string>
     <string name="desc_op_mul" msgid="978652245185868311">"गुणा"</string>
     <string name="desc_op_pow" msgid="2620877401884059447">"पावर"</string>
     <string name="desc_op_sqrt" msgid="4405610392216554239">"वर्गमूल"</string>

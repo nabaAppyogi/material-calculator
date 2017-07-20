@@ -26,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!--<include layout="@layout/pad_gst_category" />-->
+
     <com.android.calculator2.CalculatorPadViewPager
         android:id="@+id/pad_pager"
         android:layout_width="match_parent"

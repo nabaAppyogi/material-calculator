@@ -23,16 +23,24 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroupOverlay;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CalculatorL extends Calculator {
 
+    private static final String PREFS_NAME = "appyogi.calculator";
+    private static final String PREFS_KEY_SHORTCUT_PROMPT = "appyogi.calculator.shortcut.prompt";
     private Animator mCurrentAnimator;
 
     @Override
@@ -162,5 +170,68 @@ public class CalculatorL extends Calculator {
 
         mCurrentAnimator = animatorSet;
         animatorSet.start();
+    }
+
+    private void createShortcutOfApp() {
+        try {
+            Intent shortcutIntent = new Intent(getApplicationContext(),
+                    CalculatorHome.class);
+            shortcutIntent.setAction(Intent.ACTION_MAIN);
+
+            Intent addIntent = new Intent();
+            addIntent
+                    .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "GST Calculator");
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                    Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+                            R.mipmap.ic_launcher));
+
+            addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            addIntent.putExtra("duplicate", false);  //may it's already there so don't duplicate
+            getApplicationContext().sendBroadcast(addIntent);
+            Toast.makeText(getApplicationContext(),"Added shortcut",Toast.LENGTH_LONG).show();
+        }catch (Exception ignore){
+            Toast.makeText(getApplicationContext(),"Can't add shortcut",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private SharedPreferences getSharedPreference() {
+        return getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!getSharedPreference().contains(PREFS_KEY_SHORTCUT_PROMPT)) {
+            AlertDialog.Builder shortCutDialog = new AlertDialog.Builder(this);
+            shortCutDialog.setTitle("Add to Home");
+            shortCutDialog.setMessage("Would you like to add GST Calculator shortcut to Home Screen?");
+            shortCutDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            shortCutDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    getSharedPreference().edit().putBoolean(PREFS_KEY_SHORTCUT_PROMPT, true).apply();
+                    createShortcutOfApp();
+                    finish();
+                }
+            });
+            shortCutDialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    getSharedPreference().edit().putBoolean(PREFS_KEY_SHORTCUT_PROMPT, true).apply();
+                    finish();
+                }
+            });
+            shortCutDialog.create().show();
+        }else {
+            super.onBackPressed();
+        }
     }
 }

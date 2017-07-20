@@ -16,7 +16,6 @@
 
 package com.android.calculator2;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -207,27 +206,22 @@ public abstract class Calculator extends Activity
     }
 
     public void onButtonClick(View view) {
-        switch (view.getId()) {
-            case R.id.eq:
-                onEquals();
-                break;
-            case R.id.del:
-                onDelete();
-                break;
-            case R.id.clr:
-                onClear();
-                break;
-            case R.id.fun_cos:
-            case R.id.fun_ln:
-            case R.id.fun_log:
-            case R.id.fun_sin:
-            case R.id.fun_tan:
-                // Add left parenthesis after functions.
-                mFormulaEditText.append(((Button) view).getText() + "(");
-                break;
-            default:
-                mFormulaEditText.append(((Button) view).getText());
-                break;
+        int i = view.getId();
+        if (i == R.id.eq) {
+            onEquals();
+
+        } else if (i == R.id.del) {
+            onDelete();
+
+        } else if (i == R.id.clr) {
+            onClear();
+
+        } else if (i == R.id.fun_cos || i == R.id.fun_ln || i == R.id.fun_log || i == R.id.fun_sin || i == R.id.fun_tan) {// Add left parenthesis after functions.
+            mFormulaEditText.append(((Button) view).getText() + "(");
+
+        } else {
+            mFormulaEditText.append(((Button) view).getText());
+
         }
     }
 
